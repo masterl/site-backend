@@ -1,0 +1,5 @@
+--reporter spec
+--recursive
+--require test/mocha.helper.js
+--ui bdd
+--slow 120
