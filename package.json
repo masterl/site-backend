@@ -8,10 +8,12 @@
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
+    "bluebird": "^3.5.5",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -21,6 +23,9 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^6.2.0"
+    "faker": "^4.1.0",
+    "mocha": "^6.2.0",
+    "rfr": "^1.2.3",
+    "sinon": "^7.4.2"
   }
 }

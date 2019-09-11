@@ -5,7 +5,15 @@
   "plugins": [
   ],
   "globals": {
-    "expect": true
+    "R": true,
+    "rfr": true,
+    "sinon": true,
+    "faker": true,
+    "expect": true,
+    "helpers": true,
+    "builders": true,
+    "Bluebird": true,
+    "arrays_are_equal": true
   },
   "rules": {
     "no-unused-expressions": 0
