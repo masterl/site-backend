@@ -1,4 +1,11 @@
 const { Model } = require('sequelize');
+const Bluebird  = require('bluebird');
+const bcrypt    = Bluebird.promisifyAll(require('bcrypt'));
+
+const encrypt_password = (user, options) => {
+  return bcrypt.hashAsync(user.password, 10)
+    .then(password_hash => (user.password = password_hash));
+};
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model { }
@@ -27,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
+    hooks: {
+      beforeCreate: encrypt_password
+    },
     underscored: true,
     timestamps:  true,
     tableName:   'users',

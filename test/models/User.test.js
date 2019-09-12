@@ -1,12 +1,17 @@
 const { User, sequelize } = rfr('models');
 
 const UserBuilder = builders.UserBuilder;
+const copy_obj    = helpers.copy_obj;
 
 after(() => {
   return sequelize.close();
 });
 
 describe('User', () => {
+  after(() => {
+    return User.truncate();
+  });
+
   describe('model', () => {
     const model_attributes = Object.keys(User.rawAttributes);
     const required_attributes = [
@@ -25,10 +30,23 @@ describe('User', () => {
   });
 
   describe('creating one with valid info', () => {
-    const user_info = UserBuilder.random_user_info();
+    let user_info;
+
+    beforeEach(() => {
+      user_info = UserBuilder.random_user_info();
+    });
 
     it('should create new user', done => {
       expect(User.create(user_info)).to.eventually.be.fulfilled.notify(done);
+    });
+
+    it('should have encrypted user password', () => {
+      const original_info = copy_obj(user_info);
+
+      return User.create(user_info)
+        .then(user => {
+          expect(user.password).to.not.be.equal(original_info.password);
+        });
     });
   });
 
