@@ -25,7 +25,7 @@ function run_tests()
 {
   echo "Running tests..."
   print_line
-  NODE_ENV=test npm test
+  npm test
 }
 
 function run_git_status_if_available()

@@ -1,5 +1,8 @@
-const rfr = require('rfr');
-const chai = require('chai');
+const rfr              = require('rfr');
+const chai             = require('chai');
+const chai_as_promised = require('chai-as-promised');
+
+chai.use(chai_as_promised);
 
 global.R = require('ramda');
 global.faker = require('faker');

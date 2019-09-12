@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "./node_modules/.bin/mocha",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha",
+    "migrate": "NODE_ENV=test ./node_modules/.bin/sequelize-cli db:migrate --config config/db.json",
+    "migrateundo": "NODE_ENV=test ./node_modules/.bin/sequelize-cli db:migrate:undo --config config/db.json",
+    "migrateundoall": "NODE_ENV=test ./node_modules/.bin/sequelize-cli db:migrate:undo:all --config config/db.json",
     "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
@@ -13,10 +16,14 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "morgan": "~1.9.1",
-    "ramda": "^0.26.1"
+    "pg": "^7.12.1",
+    "ramda": "^0.26.1",
+    "sequelize": "^5.18.4",
+    "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^6.3.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",

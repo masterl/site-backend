@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "blogpass",
+    "database": "blog-dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "blogpass",
+    "database": "blog-test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
