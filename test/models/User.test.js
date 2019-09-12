@@ -105,5 +105,16 @@ describe('User', () => {
           expect(user.password).to.not.be.equal(new_password);
         });
     });
+
+    it('shouldn\'t re-encrypt password if it hasn\'t changed', () => {
+      user.email = new_info.email;
+
+      const old_password = Object.assign({ password: user.password }).password;
+
+      return user.save()
+        .then(user => {
+          expect(user.password).to.be.equal(old_password);
+        });
+    });
   });
 });

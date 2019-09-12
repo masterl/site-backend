@@ -3,6 +3,10 @@ const Bluebird  = require('bluebird');
 const bcrypt    = Bluebird.promisifyAll(require('bcrypt'));
 
 const encrypt_password = (user, options) => {
+  if (!user.changed('password')) {
+    return;
+  }
+
   return bcrypt.hashAsync(user.password, 10)
     .then(password_hash => (user.password = password_hash));
 };
@@ -35,8 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   },
   {
     hooks: {
-      beforeCreate: encrypt_password,
-      beforeUpdate: encrypt_password
+      beforeSave: encrypt_password
     },
     underscored: true,
     timestamps:  true,
