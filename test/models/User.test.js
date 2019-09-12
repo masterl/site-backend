@@ -82,4 +82,28 @@ describe('User', () => {
       expect(User.create(user_info)).to.eventually.be.rejected.notify(done);
     });
   });
+
+  describe('editing a user', () => {
+    let user;
+    let new_info;
+
+    beforeEach(() => {
+      new_info = UserBuilder.random_user_info();
+
+      return User.truncate()
+        .then(() => UserBuilder.create_one())
+        .then(new_user => (user = new_user));
+    });
+
+    it('should encrypt new password', () => {
+      user.password = new_info.password;
+
+      const new_password = copy_obj(new_info).password;
+
+      return user.save()
+        .then(user => {
+          expect(user.password).to.not.be.equal(new_password);
+        });
+    });
+  });
 });

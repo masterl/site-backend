@@ -35,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
   },
   {
     hooks: {
-      beforeCreate: encrypt_password
+      beforeCreate: encrypt_password,
+      beforeUpdate: encrypt_password
     },
     underscored: true,
     timestamps:  true,
