@@ -1,4 +1,4 @@
---reporter spec
+--reporter dot
 --recursive
 --require test/mocha.helper.js
 --ui bdd
