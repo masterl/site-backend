@@ -9,7 +9,7 @@ after(() => {
 
 describe('User', () => {
   after(() => {
-    return User.truncate();
+    return User.truncate({ cascade: true });
   });
 
   describe('model', () => {
@@ -90,7 +90,7 @@ describe('User', () => {
     beforeEach(() => {
       new_info = UserBuilder.random_user_info();
 
-      return User.truncate()
+      return User.truncate({ cascade: true })
         .then(() => UserBuilder.create_one())
         .then(new_user => (user = new_user));
     });
