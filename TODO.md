@@ -6,5 +6,4 @@
     - scheduled_time ?
     - publish_on ?
 - [ ] Add tags on post
-- [X] Find how to remove an enum from database and fix migration
-  - Fixed using raw query
+- [ ] Remove unnecessary Bluebird uses
