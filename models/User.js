@@ -12,7 +12,11 @@ const encrypt_password = (user, options) => {
 };
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model { }
+  class User extends Model {
+    static truncateCascade () {
+      return this.truncate({ cascade: true });
+    }
+  }
 
   User.init({
     id: {
