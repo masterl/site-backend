@@ -14,6 +14,7 @@ describe('Post', () => {
       'user_id',
       'title',
       'body',
+      'status',
       'created_at',
       'updated_at'
     ];
@@ -39,6 +40,33 @@ describe('Post', () => {
     });
 
     it('should create post', done => {
+      expect(Post.create(post_info)).to.eventually.be.fulfilled.notify(done);
+    });
+
+    it('should default status to \'draft\'', () => {
+      delete post_info.status;
+
+      return Post.create(post_info)
+        .then(post => {
+          expect(post.status).to.be.equal('draft');
+        });
+    });
+
+    it('should create if status is \'draft\'', done => {
+      post_info.status = 'draft';
+
+      expect(Post.create(post_info)).to.eventually.be.fulfilled.notify(done);
+    });
+
+    it('should create if status is \'published\'', done => {
+      post_info.status = 'published';
+
+      expect(Post.create(post_info)).to.eventually.be.fulfilled.notify(done);
+    });
+
+    it('should create if status is \'hidden\'', done => {
+      post_info.status = 'hidden';
+
       expect(Post.create(post_info)).to.eventually.be.fulfilled.notify(done);
     });
   });
@@ -88,6 +116,12 @@ describe('Post', () => {
 
     it('should reject if user_id doesn\'t belong to any user', done => {
       post_info.user_id += 1;
+
+      expect(Post.create(post_info)).to.eventually.be.rejected.notify(done);
+    });
+
+    it('should reject if status is invalid', done => {
+      post_info.status = 'chapolim';
 
       expect(Post.create(post_info)).to.eventually.be.rejected.notify(done);
     });

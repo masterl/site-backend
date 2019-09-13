@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         key:   'id' // collum namo on referenced model
       }
     },
+    status: {
+      type: DataTypes.ENUM('draft', 'published', 'hidden')
+    },
     title: {
       type:      DataTypes.STRING,
       allowNull: false,
@@ -32,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     body: {
-      type:      DataTypes.STRING,
+      type:      DataTypes.TEXT,
       allowNull: false,
       validate:  {
         notEmpty: true
