@@ -125,5 +125,17 @@ describe('API auth', () => {
         .expect('Content-Type', /json/)
         .expect(HttpStatus.BAD_REQUEST);
     });
+
+    it('should reject if password is wrong', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({
+          email:    user_info.email,
+          password: 'some wrong password'
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(HttpStatus.BAD_REQUEST);
+    });
   });
 });
