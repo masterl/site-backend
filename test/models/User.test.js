@@ -16,6 +16,7 @@ describe('User', () => {
     const model_attributes = Object.keys(User.rawAttributes);
     const required_attributes = [
       'id',
+      'name',
       'email',
       'password',
       'created_at',
@@ -57,6 +58,11 @@ describe('User', () => {
       user_info = UserBuilder.random_user_info();
     });
 
+    it('should reject if name is null', done => {
+      delete user_info.name;
+      expect(User.create(user_info)).to.eventually.be.rejected.notify(done);
+    });
+
     it('should reject if email is null', done => {
       delete user_info.email;
       expect(User.create(user_info)).to.eventually.be.rejected.notify(done);
@@ -64,6 +70,11 @@ describe('User', () => {
 
     it('should reject if password is null', done => {
       delete user_info.password;
+      expect(User.create(user_info)).to.eventually.be.rejected.notify(done);
+    });
+
+    it('should reject if name is empty string', done => {
+      user_info.name = '';
       expect(User.create(user_info)).to.eventually.be.rejected.notify(done);
     });
 
