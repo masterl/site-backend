@@ -14,4 +14,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 load_routes(path.join(__dirname, 'routes'), app);
 
+app.use((error, req, res, next) => {
+  const { status_code, message } = error;
+
+  res.status(status_code).json({ message }).end();
+});
+
 module.exports = app;

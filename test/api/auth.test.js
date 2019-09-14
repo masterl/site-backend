@@ -28,7 +28,7 @@ describe('API auth', () => {
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(200)
+        .expect(HttpStatus.OK)
         .then(response => {
           const { body } = response;
 
@@ -46,7 +46,7 @@ describe('API auth', () => {
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(200)
+        .expect(HttpStatus.OK)
         .then(response => {
           const { body } = response;
 
@@ -55,6 +55,75 @@ describe('API auth', () => {
             .then(() => done());
         })
         .catch(done);
+    });
+  });
+
+  describe('logging in with invalid info', () => {
+    let user_info;
+
+    beforeEach(() => {
+      user_info = UserBuilder.random_user_info();
+
+      return User.truncateCascade()
+        .then(() => UserBuilder.create_one(user_info));
+    });
+
+    it('should reject if email is empty string', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({
+          email:    '',
+          password: user_info.password
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should reject if password is empty string', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({
+          email:    user_info.email,
+          password: ''
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should reject if email isn\'t informed', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({
+          password: user_info.password
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should reject if password isn\'t informed', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({
+          email:    user_info.email
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('should reject if email is invalid', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({
+          email:    'chapolim@wrong',
+          password: user_info.password
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(HttpStatus.BAD_REQUEST);
     });
   });
 });
