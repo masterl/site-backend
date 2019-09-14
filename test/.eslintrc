@@ -14,6 +14,7 @@
     "helpers": true,
     "builders": true,
     "Bluebird": true,
+    "HttpStatus":true,
     "arrays_are_equal": true
   },
   "rules": {

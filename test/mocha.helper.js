@@ -10,6 +10,7 @@ global.faker = require('faker');
 global.sinon = require('sinon');
 global.request = require('supertest');
 global.Bluebird = require('bluebird');
+global.HttpStatus = require('http-status-codes');
 
 global.helpers = require('./helpers');
 global.builders = require('./data-builders');
