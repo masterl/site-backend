@@ -200,4 +200,40 @@ describe('Post', () => {
       expect(Post.create(post_info)).to.eventually.be.rejected.notify(done);
     });
   });
+
+  describe('creating with a duplicated title', () => {
+    let post_info;
+    let user;
+
+    beforeEach(() => {
+      post_info = PostBuilder.random_post_info();
+
+      return User.truncateCascade()
+        .then(() => UserBuilder.create_one())
+        .then(new_user => (user = new_user))
+        .then(() => (post_info.user_id = user.id))
+        .then(() => PostBuilder.create_one(post_info));
+    });
+
+    it('should reject', done => {
+      expect(Post.create(post_info)).to.eventually.be.rejected.notify(done);
+    });
+  });
+
+  describe('editing using a duplicated title', () => {
+    let posts = [];
+
+    beforeEach(() => {
+      return User.truncateCascade()
+        .then(() => UserBuilder.create_one())
+        .then(new_user => PostBuilder.create_many(new_user, 2))
+        .then(new_posts => (posts = new_posts));
+    });
+
+    it('should reject', done => {
+      posts[1].title = posts[0].title;
+
+      expect(posts[1].save()).to.eventually.be.rejected.notify(done);
+    });
+  });
 });

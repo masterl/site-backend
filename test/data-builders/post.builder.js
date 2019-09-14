@@ -1,4 +1,6 @@
-const moment = require('moment');
+const moment   = require('moment');
+const rfr      = require('rfr');
+const { Post } = rfr('models');
 
 const generate_large_text = () => faker.lorem.words(150);
 
@@ -35,5 +37,21 @@ module.exports = class PostBuilder {
       status,
       publish_on: options.publish_on || publish_on
     }, options);
+  }
+
+  static create_one (options = {}) {
+    return Post.create(this.random_post_info(options));
+  }
+
+  static create_many (user, quantity) {
+    if (!user) {
+      return Promise.reject(new Error('You should provide the creating user!'));
+    }
+
+    const promises = R.range(0, quantity)
+      .map(() => this.random_post_info({ user_id: user.id }))
+      .map(post_info => Post.create(post_info));
+
+    return Promise.all(promises);
   }
 };
