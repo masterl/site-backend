@@ -117,4 +117,19 @@ describe('User', () => {
         });
     });
   });
+
+  describe('creating a user with duplicated email', () => {
+    let user_info;
+
+    beforeEach(() => {
+      user_info = UserBuilder.random_user_info();
+
+      return User.truncateCascade()
+        .then(() => UserBuilder.create_one(user_info));
+    });
+
+    it('should reject', done => {
+      expect(User.create(user_info)).to.eventually.be.rejected.notify(done);
+    });
+  });
 });
