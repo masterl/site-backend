@@ -10,6 +10,7 @@
     "sinon": true,
     "faker": true,
     "expect": true,
+    "request": true,
     "helpers": true,
     "builders": true,
     "Bluebird": true,
