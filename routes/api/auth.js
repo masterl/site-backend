@@ -4,6 +4,8 @@ const router  = express.Router();
 
 const AuthController = rfr('controllers/AuthController');
 
-router.post('/login', AuthController.login);
+const load_user_by_email = rfr('middlewares/load_user_by_email');
+
+router.post('/login', load_user_by_email, AuthController.login);
 
 module.exports = router;
