@@ -12,7 +12,7 @@ function main()
 {
   tput reset
 
-  ensure_project_root_was_informed "$1"
+  ensure_project_root_was_informed "$PROJECT_ROOT"
 
   run_tests
 
@@ -32,8 +32,7 @@ function run_tests()
 
   if [ -z "$TEST_TARGETS" ]
   then
-    echo "entrou"
-    npm test
+    npm test && npm run lint
   else
     NODE_ENV=test "$PROJECT_ROOT/node_modules/.bin/mocha" "$TEST_TARGETS" &&
       npm run lint
