@@ -143,4 +143,29 @@ describe('User', () => {
       expect(User.create(user_info)).to.eventually.be.rejected.notify(done);
     });
   });
+
+  describe('checking the user\'s password', () => {
+    let user_info;
+    let user;
+
+    beforeEach(() => {
+      user_info = UserBuilder.random_user_info();
+
+      return User.truncateCascade()
+        .then(() => UserBuilder.create_one(user_info))
+        .then(new_user => (user = new_user));
+    });
+
+    it('should return true if passwords match', done => {
+      const promise = user.check_password(user_info.password);
+
+      expect(promise).to.eventually.equal(true).notify(done);
+    });
+
+    it('should return false if passwords don\'t match', done => {
+      const promise = user.check_password(`${user_info.password}wrongstuff`);
+
+      expect(promise).to.eventually.equal(false).notify(done);
+    });
+  });
 });

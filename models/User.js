@@ -1,13 +1,12 @@
 const { Model } = require('sequelize');
-const Bluebird  = require('bluebird');
-const bcrypt    = Bluebird.promisifyAll(require('bcrypt'));
+const bcrypt    = require('bcrypt');
 
 const encrypt_password = (user, options) => {
   if (!user.changed('password')) {
     return;
   }
 
-  return bcrypt.hashAsync(user.password, 10)
+  return bcrypt.hash(user.password, 10)
     .then(password_hash => (user.password = password_hash));
 };
 
@@ -15,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static truncateCascade () {
       return this.truncate({ cascade: true });
+    }
+
+    check_password (plain_text_password) {
+      return bcrypt.compare(plain_text_password, this.password);
     }
   }
 
