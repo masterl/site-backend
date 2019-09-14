@@ -4,6 +4,10 @@ readonly SCRIPT_NAME="$0"
 
 readonly PROJECT_ROOT="$1"
 
+shift 1
+
+readonly TEST_TARGETS="$*"
+
 function main()
 {
   tput reset
@@ -25,7 +29,15 @@ function run_tests()
 {
   echo "Running tests..."
   print_line
-  npm test
+
+  if [ -z "$TEST_TARGETS" ]
+  then
+    echo "entrou"
+    npm test
+  else
+    NODE_ENV=test "$PROJECT_ROOT/node_modules/.bin/mocha" "$TEST_TARGETS" &&
+      npm run lint
+  fi
 }
 
 function run_git_status_if_available()
