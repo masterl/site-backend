@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       return this.truncate({ cascade: true });
     }
 
+    static find_by_email (email) {
+      return this.findOne({
+        where: { email }
+      });
+    }
+
     check_password (plain_text_password) {
       return bcrypt.compare(plain_text_password, this.password);
     }

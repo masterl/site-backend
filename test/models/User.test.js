@@ -168,4 +168,20 @@ describe('User', () => {
       expect(promise).to.eventually.equal(false).notify(done);
     });
   });
+
+  describe('finding the user by email', () => {
+    let user_info;
+
+    beforeEach(() => {
+      user_info = UserBuilder.random_user_info();
+
+      return User.truncateCascade()
+        .then(() => UserBuilder.create_one(user_info));
+    });
+
+    it('should find existing user', () => {
+      return User.find_by_email(user_info.email)
+        .then(user => expect(user).to.exist);
+    });
+  });
 });
