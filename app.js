@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const logger       = require('morgan');
 const load_routes  = require('./util/load_routes');
 
+const { ServerError } = require('./lib/errors');
+
 const app = express();
 
 app.use(logger('dev'));
@@ -13,6 +15,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 load_routes(path.join(__dirname, 'routes'), app);
+
+app.use((error, req, res, next) => {
+  if (!error.status_code) {
+    return next(new ServerError());
+  }
+
+  next(error);
+});
 
 app.use((error, req, res, next) => {
   const { status_code, message } = error;
