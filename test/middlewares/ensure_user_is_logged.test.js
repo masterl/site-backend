@@ -31,7 +31,7 @@ describe('ensure_user_is_logged middleware', () => {
 
     user_id = random_number_between(1, 50000);
 
-    return Jwt.encode({ id: user_id })
+    return Jwt.encode({ user_id })
       .then(new_token => (token = new_token));
   });
 
@@ -60,7 +60,7 @@ describe('ensure_user_is_logged middleware', () => {
       delay_check(() => {
         expect(next.calledOnce).to.be.true;
         expect(res.locals.acting_user_token).to.exist;
-        expect(res.locals.acting_user_token.id).to.be.equal(user_id);
+        expect(res.locals.acting_user_token.user_id).to.be.equal(user_id);
 
         done();
       });
@@ -97,7 +97,7 @@ describe('ensure_user_is_logged middleware', () => {
 
   describe('when token wasn\'t signed by the application', () => {
     beforeEach(() => {
-      return RandomTokenBuilder.generate({ id: user_id })
+      return RandomTokenBuilder.generate({ user_id })
         .then(random_token => req.setHeader('Authorization', `Bearer ${random_token}`));
     });
 
@@ -132,7 +132,7 @@ describe('ensure_user_is_logged middleware', () => {
     beforeEach(() => {
       const iat = moment.utc().subtract(20, 'days').unix();
 
-      return Jwt.encode({ id: user_id, iat }, { expiresIn: '1day' })
+      return Jwt.encode({ user_id, iat }, { expiresIn: '1day' })
         .then(new_token => (token = new_token))
         .then(() => req.setHeader('Authorization', `Bearer ${token}`));
     });
