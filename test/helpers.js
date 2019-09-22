@@ -18,10 +18,17 @@ const should_have_called_next_with_error = (next, error) => {
 //   }
 // }
 
+const random_number_between = (lower_limit, upper_limit) => {
+  const range = upper_limit - lower_limit + 1;
+
+  return Math.floor(Math.random() * 10000) % range;
+};
+
 module.exports = {
   copy_obj,
   create_file,
   delay_check,
+  random_number_between,
   should_have_called_next_with_error
   // TestError
 };
