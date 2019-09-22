@@ -8,7 +8,7 @@ class PostController {
   static async create (req, res, next) {
     console.log('Post create');
     try {
-      req.body.user_id = res.locals.acting_user_token.id;
+      req.body.user_id = res.locals.acting_user_token.user_id;
 
       const new_post = await Post.create(req.body);
 

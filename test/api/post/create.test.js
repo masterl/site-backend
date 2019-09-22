@@ -1,6 +1,7 @@
-const app                 = rfr('app');
+const app = rfr('app');
+const Jwt = rfr('lib/Jwt');
+
 const { User, Post, sequelize } = rfr('models');
-const Jwt                 = rfr('lib/Jwt');
 
 const { UserBuilder, PostBuilder } = builders;
 
@@ -23,7 +24,7 @@ describe('API Post', () => {
   describe('creating a new post', () => {
     describe('with valid data', () => {
       beforeEach(() => {
-        return Jwt.encode({ id: user.id })
+        return Jwt.encode({ user_id: user.id })
           .then(new_token => (token = new_token));
       });
 
@@ -72,7 +73,7 @@ describe('API Post', () => {
 
     describe('when token is expired', () => {
       beforeEach(() => {
-        return Jwt.encode({ id: user.id, iat: moment.utc().subtract(20, 'days').unix() }, { expiresIn: '1d' })
+        return Jwt.encode({ user_id: user.id, iat: moment.utc().subtract(20, 'days').unix() }, { expiresIn: '1d' })
           .then(new_token => (token = new_token));
       });
 
