@@ -16,11 +16,14 @@ module.exports = async (req, res, next) => {
 
     next();
   } catch (error) {
-    if (error.name === 'JsonWebTokenError') {
-      return next(new UnauthorizedError());
+    switch (error.name) {
+      case 'JsonWebTokenError':
+      case 'TokenExpiredError':
+        next(new UnauthorizedError());
+        break;
+      default:
+        next(error);
     }
-
-    next(error);
   }
 };
 

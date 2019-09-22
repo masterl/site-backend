@@ -1,6 +1,6 @@
 const ensure_user_is_logged = rfr('middlewares/ensure_user_is_logged');
 
-const { User, sequelize } = rfr('models');
+const { sequelize } = rfr('models');
 const { BadRequestError, UnauthorizedError } = rfr('lib/errors');
 const Jwt                 = rfr('lib/Jwt');
 
@@ -115,6 +115,26 @@ describe('ensure_user_is_logged middleware', () => {
   describe('when token is invalid', () => {
     beforeEach(() => {
       req.setHeader('Authorization', 'Bearer chapolim');
+    });
+
+    it('should reject', done => {
+      ensure_user_is_logged(req, res, next);
+
+      delay_check(() => {
+        should_have_called_next_with_error(next, new UnauthorizedError());
+
+        done();
+      });
+    });
+  });
+
+  describe('when token is expired', () => {
+    beforeEach(() => {
+      const iat = moment.utc().subtract(20, 'days').unix();
+
+      return Jwt.encode({ id: user_id, iat }, { expiresIn: '1day' })
+        .then(new_token => (token = new_token))
+        .then(() => req.setHeader('Authorization', `Bearer ${token}`));
     });
 
     it('should reject', done => {
