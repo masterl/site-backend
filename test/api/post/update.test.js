@@ -76,5 +76,22 @@ describe('API Post', () => {
           .expect(HttpStatus.UNAUTHORIZED);
       });
     });
+
+    describe('when post doesn\'t exist', () => {
+      beforeEach(() => {
+        return Jwt.encode({ user_id: user.id })
+          .then(new_token => (token = new_token));
+      });
+
+      it('should reject', () => {
+        return request(app)
+          .put(`/api/post/${post.id + 1}`)
+          .send(post)
+          .set('Authorization', `Bearer ${token}`)
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(HttpStatus.NOT_FOUND);
+      });
+    });
   });
 });

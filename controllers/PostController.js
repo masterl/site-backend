@@ -19,7 +19,7 @@ class PostController {
   }
 
   static async update (req, res, next) {
-    const post = await Post.findByPk(req.params.id);
+    const post = res.locals.target_post;
 
     await post.update(req.body);
 
