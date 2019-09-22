@@ -17,6 +17,14 @@ class PostController {
       next(new ServerError());
     }
   }
+
+  static async update (req, res, next) {
+    const post = await Post.findByPk(req.params.id);
+
+    await post.update(req.body);
+
+    res.status(HttpStatus.OK).json({});
+  }
 }
 
 module.exports = PostController;
