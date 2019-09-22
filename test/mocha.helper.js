@@ -8,6 +8,7 @@ chai.use(chai_as_promised);
 global.R = require('ramda');
 global.faker = require('faker');
 global.sinon = require('sinon');
+global.moment = require('moment');
 global.request = require('supertest');
 global.Bluebird = require('bluebird');
 global.HttpStatus = require('http-status-codes');

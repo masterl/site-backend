@@ -68,4 +68,21 @@ describe('JWT', () => {
         });
     });
   });
+
+  describe('when token has expired', () => {
+    let original_data;
+    let token;
+
+    beforeEach(() => {
+      original_data = RandomObjectBuilder.random_obj();
+      original_data.iat = moment.utc().subtract(20, 'days').unix();
+
+      return Jwt.encode(original_data, { expiresIn: '1day' })
+        .then(new_token => (token = new_token));
+    });
+
+    it('should reject', done => {
+      expect(Jwt.decode(token)).to.eventually.be.rejected.notify(done);
+    });
+  });
 });
